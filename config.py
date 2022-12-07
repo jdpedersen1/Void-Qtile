@@ -77,7 +77,7 @@ groups = [Group(" 1 ", layout='monadtall'),
           #=-/ Scratchpad groups /-=#
           ScratchPad("music",[DropDown("tunes", "alacritty -e ncmpcpp", x=0.05, y=0.02, width=0.90, height=0.6, on_focus_lost_hide=False)]),
           ScratchPad("menu",[DropDown("launch", "alacritty -e launch.sh", x=0.33, y=0.02, width=0.35, height=0.95, on_focus_lost_hide=False)]),
-          ScratchPad("logout",[DropDown("exitMenu", "kitty -e herbst-logout.sh", x=0.40, y=0.30, width=0.20, height=0.20, on_focus_lost_hide=False)]),
+          ScratchPad("logout",[DropDown("exitMenu", "alacritty -e herbst-logout.sh", x=0.40, y=0.30, width=0.20, height=0.20, on_focus_lost_hide=False)]),
           ScratchPad("scratchpad",[DropDown("term", "alacritty", x=0.12, y=0.02, width=0.75, height=0.6, on_focus_lost_hide=False)]),
 ]
 
@@ -85,9 +85,9 @@ from libqtile.dgroups import simple_key_binder
 dgroups_key_binder = simple_key_binder("mod1")
 
 #=-/ Layout settings /-=#
-layout_theme = {"border_width": 2,
-                "margin": 6,
-                "border_focus": "e1acff",
+layout_theme = {"border_width": 1,
+                "margin": 4,
+                "border_focus": "dfdfdf",
                 "border_normal": "1D2330"
                 }
 
@@ -101,7 +101,7 @@ layouts = [
 ]
 
 #=-/ System colors /-=#
-colors = [["#282c34", "#282c34"],
+colors = [["#1f2428", "#1d2428"],
           ["#1c1f24", "#1c1f24"],
           ["#dfdfdf", "#dfdfdf"],
           ["#ff6c6b", "#ff6c6b"],
@@ -110,7 +110,9 @@ colors = [["#282c34", "#282c34"],
           ["#51afef", "#51afef"],
           ["#259ec1", "#259ec1"],
           ["#46d9ff", "#46d9ff"],
-          ["#1f5b70", "#1f5b70"]]
+          ["#1f5b70", "#1f5b70"],
+          ["#d20000", "#d20000"],
+          ["#008080", "#008080"]]
 
 #=-/ Default settings for widgets /-=#
 widget_defaults = dict(
@@ -125,35 +127,40 @@ extension_defaults = widget_defaults.copy()
 def init_widgets_list():
     widgets_list = [
               widget.Sep(
-                       linewidth = 0, padding = 6,
+                       linewidth = 0, padding = 30,
                        foreground = colors[2], background = colors[5]
-                       ),
-              widget.Image(
-                       filename = "~/Downloads/artix-logo.png", scale = "False",
-                       background = colors[5],
-                       mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerm)}
-                       ),
-             widget.TextBox(
-                       text = ' ', font = "Ubuntu Mono", fontsize = 37,
-                       background = colors[0], foreground = colors[5],
-                       padding = 0
                        ),
               widget.Sep(
                        linewidth = 0, padding = 0,
                        foreground = colors[2], background = colors[5]
                        ),
+             widget.TextBox(
+                       text = '', font = "Ubuntu Mono", fontsize = 37,
+                       background = colors[10], foreground = colors[5],
+                       padding = 0
+                       ),
+             widget.TextBox(
+                       text = '', font = "Ubuntu Mono", fontsize = 37,
+                       background = colors[11], foreground = colors[10],
+                       padding = 0
+                       ),
+             widget.TextBox(
+                       text = '', font = "Ubuntu Mono", fontsize = 37,
+                       background = colors[0], foreground = colors[11],
+                       padding = 0
+                       ),
               widget.GroupBox(
                        font = "FontAwesome Bold", fontsize = 12,
                        margin_y = 3, margin_x = 0, padding_y = 5, padding_x = 3,
                        borderwidth = 3, rounded = False,
-                       active = colors[2], inactive = colors[7],
+                       active = colors[2], inactive = colors[11],
                        highlight_color = colors[1], highlight_method = "line",
-                       this_current_screen_border = colors[4], this_screen_border = colors [4],
-                       other_current_screen_border = colors[6], other_screen_border = colors[4],
+                       this_current_screen_border = colors[10], this_screen_border = colors [10],
+                       other_current_screen_border = colors[6], other_screen_border = colors[10],
                        foreground = colors[2], background = colors[0]
                        ),
              widget.TextBox(
-                       text = '', font = "Ubuntu Mono", fontsize = 37,
+                       text = '', font = "Ubuntu Mono", fontsize = 37,
                        background = colors[5], foreground = colors[0],
                        padding = 0
                        ),
@@ -163,7 +170,7 @@ def init_widgets_list():
                        padding = 6, scale = 0.7
                        ),
               widget.CurrentLayout(
-                       foreground = colors[7], background = colors[5],
+                       foreground = colors[11], background = colors[5],
                        padding = 5
                        ),
              widget.TextBox(
@@ -176,7 +183,7 @@ def init_widgets_list():
                        padding = 0
                        ),
               widget.TextBox(
-                       text='', font = "Ubuntu Mono", fontsize = 37,
+                       text='', font = "Ubuntu Mono", fontsize = 37,
                        background = colors[5], foreground = colors[0],
                        padding = 0
                        ),
@@ -189,44 +196,48 @@ def init_widgets_list():
                        foreground = colors[0], background = colors[0]
                        ),
               widget.TextBox(
-                       text='', font = "Ubuntu Mono", fontsize = 37,
+                       text='', font = "Ubuntu Mono", fontsize = 37,
                        background = colors[0], foreground = colors[5],
                        padding = 0
                        ),
-              widget.CheckUpdates(
-                       update_interval = 10, distro = "Arch_checkupdates",
-                       display_format = "System: {updates}  ",
-                       foreground = colors[2], background = colors[5], colour_have_updates = colors[2], colour_no_updates = colors[2],
-                       mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerm + ' -e sudo pacman -Syyu')},
-                       padding = 5,
-                       ),
               widget.TextBox(
-                       text = '', font = "Ubuntu Mono", fontsize = 37,
-                       background = colors[5], foreground = colors[7],
+                       text = '', font = "Ubuntu Mono", fontsize = 37,
+                       background = colors[5], foreground = colors[11],
                        padding = 0
                        ),
                widget.GenPollText(
                        name = "ytsubs",
-                       fmt = " " " {} ", update_interval = 3600,
-                       foreground = colors[1], background = colors[7],
+                       fmt = " " " {}", update_interval = 3600,
+                       foreground = colors[1], background = colors[11],
                        func = lambda: subprocess.check_output("/home/jake/.local/scripts/ytsubs.sh").decode("utf-8"),
                        padding = 0
                        ),
               widget.TextBox(
-                       text ='', font = "Ubuntu Mono", fontsize = 37,
-                       background = colors[7], foreground = colors[0],
+                       text ='', font = "Ubuntu Mono", fontsize = 37,
+                       background = colors[11], foreground = colors[5],
+                       padding = 0
+                       ),
+              widget.TextBox(
+                       text='', font = "Ubuntu Mono", fontsize = 37,
+                       background = colors[5], foreground = colors[0],
                        padding = 0
                        ),
               widget.Clock(
-                       foreground = colors[4], background = colors[0],
+                       foreground = colors[10], background = colors[0],
                        format = "%A, %B %d - %H:%M ",
                        padding = 5
                        ),
               widget.TextBox(
-                       text = '', font = "Ubuntu Mono", fontsize = 37,
+                       text = '', font = "Ubuntu Mono", fontsize = 37,
                        background = colors[0], foreground = colors[5],
                        padding = 0
                        ),
+              widget.Image(
+                       filename = "~/.config/qtile/void_bg.png", scale = "False",
+                       background = colors[5],
+                       mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerm)}
+                       ),
+
               widget.Sep(
                        linewidth = 0, padding = 20,
                        foreground = colors[2], background = colors[5]
@@ -268,9 +279,6 @@ cursor_warp = True
 
 #=-/ Window rules /-=#
 floating_layout = layout.Floating(float_rules=[
-    # Run the utility of `xprop` to see the wm class and name of an X client.
-    # default_float_rules include: utility, notification, toolbar, splash, dialog,
-    # file_progress, confirm, download and error.
     *layout.Floating.default_float_rules,
     Match(title='Confirmation'),      # tastyworks exit box
     Match(title='Qalculate!'),        # qalculate-gtk

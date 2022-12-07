@@ -11,3 +11,4 @@ pa-applet &
 cbatticon  -i notification /sys/class/power_supply/BAT0 &
 nm-applet &
 mpd --no-daemon $HOME/.config/mpd/mpd.conf &
+$HOME/.config/herbstluftwm/updicon.sh &
