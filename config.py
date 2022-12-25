@@ -35,15 +35,15 @@ keys = [
          #=-/ Browsers /-=#
          Key([mod, "shift"], "b", lazy.spawn(myBrowser), desc='brave-browser-stable'),
          Key([mod, "shift"], "f", lazy.spawn("firefox"), desc='another browser'),
-         Key([mod, "shift"], "l", lazy.spawn("librewolf"), desc='school browser'),
+         Key([mod, "shift"], "n", lazy.spawn("nyxt"), desc='school browser'),
 
          #=-/ Window manipulation /-=#
-         Key([mod], "j", lazy.layout.down(), desc='Move focus down in current stack pane'),
-         Key([mod], "k", lazy.layout.up(), desc='Move focus up in current stack pane'),
-         Key([mod, "shift"], "j", lazy.layout.shuffle_down(), lazy.layout.section_down(), desc='Move windows down in current stack'),
-         Key([mod, "shift"], "k", lazy.layout.shuffle_up(), lazy.layout.section_up(), desc='Move windows up in current stack'),
-         Key([mod], "h", lazy.layout.shrink(), lazy.layout.decrease_nmaster(), desc='Shrink window (MonadTall), decrease number in master pane (Tile)'),
-         Key([mod], "l", lazy.layout.grow(), lazy.layout.increase_nmaster(), desc='Expand window (MonadTall), increase number in master pane (Tile)'),
+         Key([mod], "Right", lazy.layout.down(), desc='Move focus down in current stack pane'),
+         Key([mod], "Left", lazy.layout.up(), desc='Move focus up in current stack pane'),
+         Key([mod, "control"], "Left", lazy.layout.shuffle_down(), lazy.layout.section_down(), desc='Move windows down in current stack'),
+         Key([mod, "control"], "Right", lazy.layout.shuffle_up(), lazy.layout.section_up(), desc='Move windows up in current stack'),
+         Key([mod], "Down", lazy.layout.shrink(), lazy.layout.decrease_nmaster(), desc='Shrink window (MonadTall), decrease number in master pane (Tile)'),
+         Key([mod], "Up", lazy.layout.grow(), lazy.layout.increase_nmaster(), desc='Expand window (MonadTall), increase number in master pane (Tile)'),
          Key([mod], "n", lazy.layout.normalize(), desc='normalize window size ratios'),
          Key([mod], "m", lazy.layout.maximize(), desc='toggle window between minimum and maximum sizes'),
          Key([mod], "f", lazy.window.toggle_fullscreen(), desc='toggle fullscreen'),
@@ -62,7 +62,8 @@ keys = [
          Key([mod, "shift"], "d", lazy.group['menu'].dropdown_toggle('launch')),
          Key([mod, "shift"], "c", lazy.group['logout'].dropdown_toggle('exitMenu')),
          Key([mod], "t", lazy.group['music'].dropdown_toggle('tunes')),
-]
+         Key([mod, "shift"], "e", lazy.group['edit'].dropdown_toggle('editConf')), 
+         ]
 
 #=-/ Window groups settings /-=#
 groups = [Group(" 1 ", layout='monadtall'),
@@ -77,8 +78,9 @@ groups = [Group(" 1 ", layout='monadtall'),
           #=-/ Scratchpad groups /-=#
           ScratchPad("music",[DropDown("tunes", "alacritty -e ncmpcpp", x=0.05, y=0.02, width=0.90, height=0.6, on_focus_lost_hide=False)]),
           ScratchPad("menu",[DropDown("launch", "alacritty -e launch.sh", x=0.33, y=0.02, width=0.35, height=0.95, on_focus_lost_hide=False)]),
-          ScratchPad("logout",[DropDown("exitMenu", "alacritty -e herbst-logout.sh", x=0.40, y=0.30, width=0.20, height=0.20, on_focus_lost_hide=False)]),
+          ScratchPad("logout",[DropDown("exitMenu", "alacritty -e herbst-logout.sh", x=0.4, y=0.2, width=0.20, height=0.20, on_focus_lost_hide=False)]),
           ScratchPad("scratchpad",[DropDown("term", "alacritty", x=0.12, y=0.02, width=0.75, height=0.6, on_focus_lost_hide=False)]),
+          ScratchPad("edit",[DropDown("editConf", "alacritty -e edit_configs.sh", x=0.795, y=0.01, width=0.20, height=0.98, on_focus_lost_hide=False)]),
 ]
 
 from libqtile.dgroups import simple_key_binder
@@ -111,7 +113,7 @@ colors = [["#1f2428", "#1d2428"],
           ["#259ec1", "#259ec1"],
           ["#46d9ff", "#46d9ff"],
           ["#1f5b70", "#1f5b70"],
-          ["#d20000", "#d20000"],
+          ["#d84949", "#d84949"],
           ["#008080", "#008080"]]
 
 #=-/ Default settings for widgets /-=#
@@ -127,26 +129,31 @@ extension_defaults = widget_defaults.copy()
 def init_widgets_list():
     widgets_list = [
               widget.Sep(
-                       linewidth = 0, padding = 30,
+                       linewidth = 0, padding = 10,
                        foreground = colors[2], background = colors[5]
+                       ),
+              widget.Image(
+                       filename = "~/.config/qtile/qtile.png", scale = "False",
+                       background = colors[5],
+                       mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerm)}
                        ),
               widget.Sep(
                        linewidth = 0, padding = 0,
                        foreground = colors[2], background = colors[5]
                        ),
              widget.TextBox(
-                       text = '', font = "Ubuntu Mono", fontsize = 37,
-                       background = colors[10], foreground = colors[5],
+                       text = '', font = "Ubuntu Mono", fontsize = 37,
+                       background = colors[5], foreground = colors[0],
                        padding = 0
                        ),
              widget.TextBox(
-                       text = '', font = "Ubuntu Mono", fontsize = 37,
-                       background = colors[11], foreground = colors[10],
-                       padding = 0
-                       ),
-             widget.TextBox(
-                       text = '', font = "Ubuntu Mono", fontsize = 37,
+                       text = '', font = "Ubuntu Mono", fontsize = 37,
                        background = colors[0], foreground = colors[11],
+                       padding = 0
+                       ),
+             widget.TextBox(
+                       text = '', font = "Ubuntu Mono", fontsize = 37,
+                       background = colors[11], foreground = colors[0],
                        padding = 0
                        ),
               widget.GroupBox(
@@ -160,8 +167,8 @@ def init_widgets_list():
                        foreground = colors[2], background = colors[0]
                        ),
              widget.TextBox(
-                       text = '', font = "Ubuntu Mono", fontsize = 37,
-                       background = colors[5], foreground = colors[0],
+                       text = '', font = "Ubuntu Mono", fontsize = 37,
+                       background = colors[0], foreground = colors[5],
                        padding = 0
                        ),
               widget.CurrentLayoutIcon(
@@ -213,8 +220,25 @@ def init_widgets_list():
                        padding = 0
                        ),
               widget.TextBox(
-                       text ='', font = "Ubuntu Mono", fontsize = 37,
+                       text='', font = "Ubuntu Mono", fontsize = 37,
                        background = colors[11], foreground = colors[5],
+                       padding = 0
+                       ),
+              widget.TextBox(
+                       text = '', font = "Ubuntu Mono", fontsize = 37,
+                       background = colors[5], foreground = colors[1],
+                       padding = 0
+                       ),
+               widget.GenPollText(
+                       name = "mail",
+                       fmt = " {} ", update_interval = 3600,
+                       foreground = colors[11], background = colors[1],
+                       func = lambda: subprocess.check_output("/home/jake/.local/scripts/mailcheck.sh").decode("utf-8"),
+                       padding = 0
+                       ),
+              widget.TextBox(
+                       text ='', font = "Ubuntu Mono", fontsize = 37,
+                       background = colors[1], foreground = colors[5],
                        padding = 0
                        ),
               widget.TextBox(
@@ -224,7 +248,7 @@ def init_widgets_list():
                        ),
               widget.Clock(
                        foreground = colors[10], background = colors[0],
-                       format = "%A, %B %d - %H:%M ",
+                       format = "%A, %B %d - %l:%M %p",
                        padding = 5
                        ),
               widget.TextBox(
@@ -239,7 +263,7 @@ def init_widgets_list():
                        ),
 
               widget.Sep(
-                       linewidth = 0, padding = 20,
+                       linewidth = 0, padding = 10,
                        foreground = colors[2], background = colors[5]
                        ),
               ]
@@ -253,7 +277,7 @@ def init_widgets_screen1():
 #=-/ Set bar height and opacity, also set wallpaper /-=#
 def init_screens():
     return [Screen(top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=20),
-            wallpaper='~/.config/herbstluftwm/wallpaper/teal/city.jpg',
+            wallpaper='~/.config/qtile/city.jpg',
             wallpaper_mode='fill')]
 
 #=-/ Initiate functions for screens and widgets /-=#
